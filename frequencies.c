@@ -45,6 +45,40 @@ const freq_band_table_t frequencyBandTable[] =
 		[BAND6_400MHz]={.lower = 40000000,  .upper = 47000000}
 };
 
+const uint32_t GMRS_Frequency_Table[30] =
+  {
+    46256250,
+    46258750,
+    46261250,
+    46266250,
+    46263750,
+    46268750,
+    46271250,
+    46756250,
+    46758750,
+    46761250,
+    46763750,
+    46766250,
+    46768750,
+    46771250,
+    46255000,
+    46257500,
+    46260000,
+    46262500,
+    46265000,
+    46267500,
+    46270000,
+    46272500,
+    46255000,
+    46257500,
+    46260000,
+    46262500,
+    46265000,
+    46267500,
+    46270000,
+    46272500
+  };
+
 #ifdef ENABLE_NOAA
 	const uint32_t NoaaFrequencyTable[10] =
 	{
@@ -171,21 +205,6 @@ int32_t TX_freq_check(const uint32_t Frequency)
 
 	switch (gSetting_F_LOCK)
 	{
-		case F_LOCK_DEF:
-			if (Frequency >= frequencyBandTable[BAND3_137MHz].lower && Frequency < frequencyBandTable[BAND3_137MHz].upper)
-				return 0;
-			if (Frequency >= frequencyBandTable[BAND4_174MHz].lower && Frequency < frequencyBandTable[BAND4_174MHz].upper)
-				if (gSetting_200TX)
-					return 0;
-			if (Frequency >= frequencyBandTable[BAND5_350MHz].lower && Frequency < frequencyBandTable[BAND5_350MHz].upper)
-				if (gSetting_350TX && gSetting_350EN)
-					return 0;
-			if (Frequency >= frequencyBandTable[BAND6_400MHz].lower && Frequency < frequencyBandTable[BAND6_400MHz].upper)
-				return 0;
-			if (Frequency >= frequencyBandTable[BAND7_470MHz].lower && Frequency <= 60000000)
-				if (gSetting_500TX)
-					return 0;
-			break;
 
 		case F_LOCK_FCC:
 			if (Frequency >= 14400000 && Frequency < 14800000)
@@ -194,33 +213,12 @@ int32_t TX_freq_check(const uint32_t Frequency)
 				return 0;
 			break;
 
-		case F_LOCK_CE:
-			if (Frequency >= 14400000 && Frequency < 14600000)
-				return 0;
-			if (Frequency >= 43000000 && Frequency < 44000000)
-				return 0;
-			break;
-
-		case F_LOCK_GB:
-			if (Frequency >= 14400000 && Frequency < 14800000)
-				return 0;
-			if (Frequency >= 43000000 && Frequency < 44000000)
-				return 0;
-			break;
-
-		case F_LOCK_430:
-			if (Frequency >= frequencyBandTable[BAND3_137MHz].lower && Frequency < 17400000)
-				return 0;
-			if (Frequency >= 40000000 && Frequency < 43000000)
-				return 0;
-			break;
-
-		case F_LOCK_438:
-			if (Frequency >= frequencyBandTable[BAND3_137MHz].lower && Frequency < 17400000)
-				return 0;
-			if (Frequency >= 40000000 && Frequency < 43800000)
-				return 0;
-			break;
+    case F_LOCK_GMRS:
+      for (int i = 0; i < 30; i++) {
+        if (Frequency == GMRS_Frequency_Table[i])
+          return 0;
+      }
+      break;
 
 		case F_LOCK_ALL:
 			break;
