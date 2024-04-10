@@ -277,7 +277,7 @@ const char gSubMenu_RESET[][4] =
 const char * const gSubMenu_F_LOCK[] =
 {
 	"FCC HAM\n144-148\n420-450",
-	"GMRS Bands",
+	"GMRS\nBands",
 	"DISABLE\nALL",
 	"UNLOCK\nALL",
 };
